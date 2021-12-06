@@ -1,5 +1,5 @@
 <!DOCTYPE html><html><head>
-      <title>setup-2</title>
+      <title>setup-1</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
@@ -273,49 +273,59 @@ pre[data-line] .line-highlight[data-end]:after {
     </head>
     <body for="html-export">
       <div class="mume markdown-preview  ">
-      <h1 class="mume-header" id="smart-contract">Smart Contract</h1>
+      <h1 class="mume-header" id="dapp-with-etherium-smart-contracts-a-tutorial">DApp with Etherium Smart Contracts - A Tutorial</h1>
 
-<p>Once we have the environment set up, we actually need to create a basic contract. The hello world for DApps is a greeter contract that does both reading and writing to the chain.</p>
-<pre data-role="codeBlock" data-info="javascript" class="language-javascript"><span class="token comment">//SPDX-License-Identifier: MIT</span>
-pragma solidity <span class="token operator">^</span><span class="token number">0.8</span><span class="token number">.0</span><span class="token punctuation">;</span>
+<!--<h3 class="mume-header" id="about">About</h3>
 
-<span class="token keyword module">import</span> <span class="token string">&quot;hardhat/console.sol&quot;</span><span class="token punctuation">;</span>
+<p>Created by recluze<br>
+See video courses on <a href="http://recluze.net/learn">recluze.net/learn</a></p>-->
+<h2 class="mume-header" id="environment-setup">Environment Setup</h2>
 
-contract <span class="token maybe-class-name">Greeter</span> <span class="token punctuation">{</span>
-  string greeting<span class="token punctuation">;</span>
+<p>Here&apos;s the stuff we&apos;ll need</p>
+<ul>
+<li>NVM</li>
+<li>Node</li>
+<li>Hardhat</li>
+<li>MetaMask Wallet</li>
+</ul>
+<p>Set up NVM first for</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash"><span class="token function">curl</span> -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh <span class="token operator">|</span> <span class="token function">bash</span>
+</pre><p>Add the environment variables for accesing node commands.</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">nvm <span class="token function">install</span> --lts
+</pre><h2 class="mume-header" id="install-metamask">Install MetaMask</h2>
 
-  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">string memory _greeting</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token string">&quot;Deploying a Greeter with greeting:&quot;</span><span class="token punctuation">,</span> _greeting<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    greeting <span class="token operator">=</span> _greeting<span class="token punctuation">;</span>
+<p>MetaMask will manage our wallet so that we can easily view our accounts and test our DApps easily. Go ahead and install MetaMask from <code>https://metamask.io/</code>. I&apos;ll use Firefox but you can just as well use Chrome.</p>
+<p>(I strongly suggest you use MetaMask for this tutorial so that you can follow along. There&apos;s a million wallets out there and it would be difficult to debug issues if you use something other than MetaMask.)</p>
+<p>Just go ahead and create an account on MetaMask, set your password and then save the recovery keys as given in the instructions.</p>
+<h2 class="mume-header" id="setting-up-hardhat">Setting up Hardhat</h2>
+
+<p>In order to test out our smart contracts, we need an environment that simulates the etherium network locally. We will later try out our smart contract on a global testnet too.</p>
+<p>First, set up a react app that we will use to interact with our environment.</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">npx create-react-app react-dapp
+<span class="token builtin class-name">cd</span> react-dapp 
+</pre><p>Now go ahead and set up hardhat along with all its dependencies. For now, let&apos;s not go into the details of what each part does and what alternatives are available. That would only slow you down and create confusions. It&apos;s best to get a hello world done and study options afterwards.</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> ethers hardhat @nomiclabs/hardhat-waffle <span class="token punctuation">\</span>
+            ethereum-waffle chai <span class="token punctuation">\</span>
+            @nomiclabs/hardhat-ethers
+</pre><p>Let&apos;s create basic hardhat configs and setup.</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">npx hardhat 
+</pre><p>Accept all defaults. This will create a basic sample project for us.</p>
+<p>We need to edit the hardhat config file so that this works well with MetaMask. ChainId is a unique identifier for the blockchain.</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash"><span class="token function">vi</span> hardhat.config.js
+</pre><pre data-role="codeBlock" data-info="javascript" class="language-javascript">module<span class="token punctuation">.</span><span class="token property-access">exports</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+  solidity<span class="token operator">:</span> <span class="token string">&quot;0.8.4&quot;</span><span class="token punctuation">,</span>
+  paths<span class="token operator">:</span> <span class="token punctuation">{</span>                         <span class="token comment">// add this </span>
+    artifacts<span class="token operator">:</span> <span class="token string">&apos;./src/artifacts&apos;</span><span class="token punctuation">,</span>  <span class="token comment">// this is where our compiled contracts will go</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  networks<span class="token operator">:</span> <span class="token punctuation">{</span>                      <span class="token comment">// and this ... </span>
+    hardhat<span class="token operator">:</span> <span class="token punctuation">{</span>
+      chainId<span class="token operator">:</span> <span class="token number">1337</span>                <span class="token comment">// this is needed for MetaMask</span>
+    <span class="token punctuation">}</span>
   <span class="token punctuation">}</span>
-
-  <span class="token keyword">function</span> <span class="token function">greet</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">public</span> view <span class="token function">returns</span> <span class="token punctuation">(</span><span class="token parameter">string memory</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword control-flow">return</span> greeting<span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-
-  <span class="token keyword">function</span> <span class="token function">setGreeting</span><span class="token punctuation">(</span><span class="token parameter">string memory _greeting</span><span class="token punctuation">)</span> <span class="token keyword">public</span> <span class="token punctuation">{</span>
-    <span class="token console class-name">console</span><span class="token punctuation">.</span><span class="token method function property-access">log</span><span class="token punctuation">(</span><span class="token string">&quot;Changing greeting from &apos;%s&apos; to &apos;%s&apos;&quot;</span><span class="token punctuation">,</span> greeting<span class="token punctuation">,</span> _greeting<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    greeting <span class="token operator">=</span> _greeting<span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-</pre><p>Our contract is in solidity. This cannot be accessed directly from our Javascript frameworks. For that, we need to &quot;compile&quot; it to Javscript (ABI). Think of this as a wrapper that connects to the contract and can help you call functions of the contract without having to worry about the details (marshalling etc.) yourself.</p>
-<p>The actual command is pretty simple:</p>
-<pre data-role="codeBlock" data-info="bash" class="language-bash">npx hardhat compile
-</pre><p>A new file will be created in:</p>
-<pre data-role="codeBlock" data-info="bash" class="language-bash">src/artifacts/contracts/Greeter.sol/Greeter.json
-</pre><p>We will import this file when writing our react script.</p>
-<h2 class="mume-header" id="starting-a-dummy-network-and-deploying-the-contract">Starting a Dummy Network and Deploying the Contract</h2>
-
-<pre data-role="codeBlock" data-info="bash" class="language-bash">npx hardhat node
-</pre><p>These are test accounts created for the purpose of testing the local network. We&apos;ll use these for a while. Make sure you don&apos;t use them on actual Mainnet or even the public testnets.</p>
-<p>Take note of the private key and address of the first test account.</p>
-<p>Let&apos;s go ahead and import these to our MetaMask Wallet.</p>
-<p>First, connect to the localhost network. To do this, click on the <code>Network</code> dropdown (top mid) of MetaMask and select <code>localhost</code>. Rest of the configurations are fine.</p>
-<p>Then, <code>Account -&gt; Import Account</code>. Then paste your private key (for first test account) in there. You should have 10,000 ETH in there. They&apos;re not too useful though so don&apos;t get excited. Let&apos;s call this <code>hh-test0x</code> account.</p>
-<p>Let&apos;s create a new account outside of Hardhat and send it some Ether.</p>
-<p>Go to Metamask and <code>Account -&gt; Create Account</code>. Give it a useful name. I&apos;m using <code>recly-test0x</code>. Keep this account safe for now. We&apos;ll be using it later on. Save the private key by going to <code>...</code> menu (the dots menu), then <code>Account Details</code>. Click on <code>Export Private Key</code>. Enter the password for MetaMask and save your private key somewhere. All of these are test keys and should defnitely not be used on mainnet.</p>
-<p>Switch to <code>hh-test0x</code> account and send some ether to <code>recly-test0x</code>. (When you do this again the next time you start this tutorial from scratch, you will get a nonce error. For that, simply go to <code>Accounts -&gt; Settings -&gt; Advanced -&gt; Reset Account</code>.)</p>
-<p>Note the output in console as well as ether changes in your MetaMask accounts.</p>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</pre><p>Start a node using:</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">npx hardhat node 
+</pre><p>And try to connect to it using MetaMask.</p>
 
       </div>
       

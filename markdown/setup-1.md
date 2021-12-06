@@ -1,10 +1,5 @@
 # DApp with Etherium Smart Contracts - A Tutorial
 
-### About 
-
-Created by recluze 
-See video courses on recluze.net/learn 
-
 
 ## Environment Setup 
 
