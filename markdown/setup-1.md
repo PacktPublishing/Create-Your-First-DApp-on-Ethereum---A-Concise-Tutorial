@@ -1,4 +1,4 @@
-# DApp with Etherium Smart Contracts - A Tutorial
+# DApp with Ethereum Smart Contracts - A Tutorial
 
 
 ## Environment Setup 

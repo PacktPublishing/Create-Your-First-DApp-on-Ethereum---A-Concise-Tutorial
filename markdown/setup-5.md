@@ -17,7 +17,7 @@ Request ETH on all the faucets. You'll need it for testing and it sometimes take
 
 Next, let's create a project in Infura. This will give us an endpoint through which we can actually push our contract. Think of this as the equivalent of the `node` that we created locally. For the internet, you need some node to act on your behalf. We'll use infura but you can also use Alchemy. 
 
-Go to `infura.io` and create a new Etherium project. You need the `Project ID`. Also select Ropsten from the Endpoints dropdown and get the endpoint URL. Save both of these somewhere. 
+Go to `infura.io` and create a new Ethereum project. You need the `Project ID`. Also select Ropsten from the Endpoints dropdown and get the endpoint URL. Save both of these somewhere. 
 
 Also in the security tab, enter your public key (not the private key!) for the account `recly-test0x` account. This is because we have some test ETH in this account and we'll need that to deploy our contracts. 
 

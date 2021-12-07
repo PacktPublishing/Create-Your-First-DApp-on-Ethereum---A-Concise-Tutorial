@@ -288,7 +288,7 @@ pre[data-line] .line-highlight[data-end]:after {
 <h3 class="mume-header" id="get-endpoints">Get Endpoints</h3>
 
 <p>Next, let&apos;s create a project in Infura. This will give us an endpoint through which we can actually push our contract. Think of this as the equivalent of the <code>node</code> that we created locally. For the internet, you need some node to act on your behalf. We&apos;ll use infura but you can also use Alchemy.</p>
-<p>Go to <code>infura.io</code> and create a new Etherium project. You need the <code>Project ID</code>. Also select Ropsten from the Endpoints dropdown and get the endpoint URL. Save both of these somewhere.</p>
+<p>Go to <code>infura.io</code> and create a new Ethereum project. You need the <code>Project ID</code>. Also select Ropsten from the Endpoints dropdown and get the endpoint URL. Save both of these somewhere.</p>
 <p>Also in the security tab, enter your public key (not the private key!) for the account <code>recly-test0x</code> account. This is because we have some test ETH in this account and we&apos;ll need that to deploy our contracts.</p>
 <p>Stop the hardhat node and let&apos;s configure it to use the Ropsten Testnet.</p>
 <p>Edit the <code>hardhat.config.js</code> file and add the configs for Ropsten.</p>
